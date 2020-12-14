@@ -16,6 +16,8 @@ namespace SerializationBenchmark
         private static readonly byte[] _msgpack_pickled;
         private static readonly ArrayBufferWriter<byte> _protobuf_plain;
         private static readonly byte[] _protobuf_pickled;
+        private static readonly ArrayBufferWriter<byte> _googleprotobuf_plain;
+        private static readonly byte[] _googleprotobuf_pickled;
         private static readonly byte[] _systemtextjson_plain;
         private static readonly byte[] _systemtextjson_pickled;
         private static readonly byte[] _newtonsoft_plain;
@@ -37,6 +39,8 @@ namespace SerializationBenchmark
             _msgpack_pickled = Serializers.MessagePack_SerializePickled(TestData.TestValue);
             _protobuf_plain = Serializers.Protobuf_SerializePlain(TestData.TestValue);
             _protobuf_pickled = Serializers.Protobuf_SerializePickled(TestData.TestValue);
+            _googleprotobuf_plain = Serializers.GoogleProtobuf_SerializePlain(TestDataDto.TestValue);
+            _googleprotobuf_pickled = Serializers.GoogleProtobuf_SerializePickled(TestDataDto.TestValue);
             _systemtextjson_plain = Serializers.SystemTextJson_SerializePlain(TestData.TestValue);
             _systemtextjson_pickled = Serializers.SystemTextJson_SerializePickled(TestData.TestValue);
             _newtonsoft_plain = Serializers.Newtonsoft_SerializePlain(TestData.TestValue);
@@ -47,6 +51,8 @@ namespace SerializationBenchmark
             Console.WriteLine($"_msgpack_pickled       : {_msgpack_pickled.Length} bytes");
             Console.WriteLine($"_protobuf_plain        : {_protobuf_plain.WrittenCount} bytes");
             Console.WriteLine($"_protobuf_pickled      : {_protobuf_pickled.Length} bytes");
+            Console.WriteLine($"_googleprotobuf_plain  : {_googleprotobuf_plain.WrittenCount} bytes");
+            Console.WriteLine($"_googleprotobuf_pickled: {_googleprotobuf_pickled.Length} bytes");
             Console.WriteLine($"_systemtextjson_plain  : {_systemtextjson_plain.Length} bytes");
             Console.WriteLine($"_systemtextjson_pickled: {_systemtextjson_pickled.Length} bytes");
             Console.WriteLine($"_newtonsoft_plain      : {_newtonsoft_plain.Length} bytes");
@@ -98,6 +104,25 @@ namespace SerializationBenchmark
             for (int i = 0; i < Iterations; i++)
             {
                 _ = Serializers.Protobuf_SerializePickled(TestData.TestValue);
+            }
+        }
+
+        [Benchmark]
+        public void GoogleProtobuf_SerializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                var br = Serializers.GoogleProtobuf_SerializePlain(TestDataDto.TestValue);
+                Serializers.Return(br);
+            }
+        }
+
+        [Benchmark]
+        public void GoogleProtobuf_SerializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.GoogleProtobuf_SerializePickled(TestDataDto.TestValue);
             }
         }
 
@@ -183,6 +208,24 @@ namespace SerializationBenchmark
         }
 
         [Benchmark]
+        public void GoogleProtobuf_DeserializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.GoogleProtobuf_DeserializePlain<UserLicensesResponseDto>(_googleprotobuf_plain.WrittenMemory, UserLicensesResponseDto.Parser);
+            }
+        }
+
+        [Benchmark]
+        public void GoogleProtobuf_DeserializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.GoogleProtobuf_DeserializePicked<UserLicensesResponseDto>(_googleprotobuf_pickled, UserLicensesResponseDto.Parser);
+            }
+        }
+
+        [Benchmark]
         public void SystemTextJson_DeserializePlain()
         {
             for (int i = 0; i < Iterations; i++)
@@ -223,10 +266,13 @@ namespace SerializationBenchmark
     {
         static void Main(string[] args)
         {
-//            var b = new Benchmarks();
-//            b.Protobuf_DeserializePickled();
+            var b = new Benchmarks();
+            for (int i = 0; i < 100000; i++)
+            {
+                b.GoogleProtobuf_SerializePlain();
+            }
 
-            _ = BenchmarkRunner.Run<Benchmarks>();
+            //_ = BenchmarkRunner.Run<Benchmarks>();
         }
     }
 }

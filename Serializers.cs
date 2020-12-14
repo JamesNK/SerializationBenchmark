@@ -1,8 +1,10 @@
-﻿using K4os.Compression.LZ4;
+﻿using Google.Protobuf;
+using K4os.Compression.LZ4;
 using MessagePack;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Encodings;
 using System.Text.Json;
@@ -129,6 +131,33 @@ namespace SerializationBenchmark
         public static T Newtonsoft_DeserializedPickled<T>(ReadOnlySpan<byte> data)
         {
             return JsonConvert.DeserializeObject<T>(UTF8Encoding.UTF8.GetString(LZ4Pickler.Unpickle(data)));
+        }
+
+        public static ArrayBufferWriter<byte> GoogleProtobuf_SerializePlain<T>(T data) where T : IBufferMessage
+        {
+            var br = _pool.Rent();
+            data.WriteTo(br);
+            return br;
+        }
+
+        public static T GoogleProtobuf_DeserializePlain<T>(ReadOnlyMemory<byte> data, MessageParser<T> messageParser) where T : IMessage<T>
+        {
+            return messageParser.ParseFrom(new ReadOnlySequence<byte>(data));
+        }
+
+        public static byte[] GoogleProtobuf_SerializePickled<T>(T data) where T : IBufferMessage
+        {
+            var br = _pool.Rent();
+            data.WriteTo(br);
+            var result = LZ4Pickler.Pickle(br.WrittenSpan);
+            _pool.Return(br);
+
+            return result;
+        }
+
+        public static T GoogleProtobuf_DeserializePicked<T>(ReadOnlySpan<byte> data, MessageParser<T> messageParser) where T : IMessage<T>
+        {
+            return messageParser.ParseFrom(new ReadOnlySequence<byte>(LZ4Pickler.Unpickle(data)));
         }
 
         public static void Return(ArrayBufferWriter<byte> writer)

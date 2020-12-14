@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "SerializationBenchmark";
+
+message ServicePlanDto {
+    string ServicePlanId = 1;
+    string ServicePlanName = 2;
+    string ProvisioningStatus = 3;
+    string AppliesTo = 4;
+    int32 Count = 5;
+}
+
+enum ColorDto {
+    Red = 0;
+    Green = 1;
+    Blue = 2;
+    Yellow = 3;
+    Orange = 4;
+}
+
+message UserLicenseDto {
+    string ObjectId = 1;
+    string SkuId = 2;
+    string SkuPartNumber = 3;
+    repeated ServicePlanDto ServicePlans = 4;
+    map<string, ColorDto> FruitColors = 5;
+}
+
+message UserLicensesResponseDto {
+    repeated UserLicenseDto Licenses = 1;
+}
