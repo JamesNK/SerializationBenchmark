@@ -266,13 +266,13 @@ namespace SerializationBenchmark
     {
         static void Main(string[] args)
         {
-            var b = new Benchmarks();
-            for (int i = 0; i < 100000; i++)
-            {
-                b.GoogleProtobuf_SerializePlain();
-            }
+            //var b = new Benchmarks();
+            //for (int i = 0; i < 100000; i++)
+            //{
+            //    b.GoogleProtobuf_SerializePlain();
+            //}
 
-            //_ = BenchmarkRunner.Run<Benchmarks>();
+            _ = BenchmarkRunner.Run<Benchmarks>();
         }
     }
 }
