@@ -1,11 +1,12 @@
-﻿using K4os.Compression.LZ4;
+﻿using Google.Protobuf;
+using K4os.Compression.LZ4;
 using MessagePack;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
 using System.Text;
-using System.Text.Encodings;
 using System.Text.Json;
+using Google.Protobuf;
 
 namespace SerializationBenchmark
 {
@@ -59,19 +60,19 @@ namespace SerializationBenchmark
             return MessagePackSerializer.Deserialize<T>(data, _compressingOptions);
         }
 
-        public static ArrayBufferWriter<byte> Protobuf_SerializePlain<T>(T data)
+        public static ArrayBufferWriter<byte> ProtobufNet_SerializePlain<T>(T data)
         {
             var br = _pool.Rent();
             ProtoBuf.Serializer.Serialize(br, data);
             return br;
         }
 
-        public static T Protobuf_DeserializePlain<T>(ReadOnlySpan<byte> data)
+        public static T ProtobufNet_DeserializePlain<T>(ReadOnlySpan<byte> data)
         {
             return ProtoBuf.Serializer.Deserialize<T>(data);
         }
 
-        public static byte[] Protobuf_SerializePickled<T>(T data)
+        public static byte[] ProtobufNet_SerializePickled<T>(T data)
         {
             var br = _pool.Rent();
             ProtoBuf.Serializer.Serialize(br, data);
@@ -81,9 +82,36 @@ namespace SerializationBenchmark
             return result;
         }
 
-        public static T Protobuf_DeserializePicked<T>(ReadOnlySpan<byte> data)
+        public static T ProtobufNet_DeserializePicked<T>(ReadOnlySpan<byte> data)
         {
             return ProtoBuf.Serializer.Deserialize<T>(new ReadOnlyMemory<byte>(LZ4Pickler.Unpickle(data)));
+        }
+
+        public static ArrayBufferWriter<byte> Protobuf_SerializePlain(IBufferMessage data)
+        {
+            var br = _pool.Rent();
+            data.WriteTo(br);
+            return br;
+        }
+
+        public static void Protobuf_DeserializePlain(byte[] data, IMessage target)
+        {
+            target.MergeFrom(data);
+        }
+
+        public static byte[] Protobuf_SerializePickled(IBufferMessage data)
+        {
+            var br = _pool.Rent();
+            data.WriteTo(br);
+            var result = LZ4Pickler.Pickle(br.WrittenSpan);
+            _pool.Return(br);
+
+            return result;
+        }
+
+        public static void Protobuf_DeserializePickled(byte[] data, IMessage target)
+        {
+            target.MergeFrom(LZ4Pickler.Unpickle(data));
         }
 
         public static byte[] SystemTextJson_SerializePlain<T>(T data)

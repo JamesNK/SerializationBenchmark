@@ -1,36 +1,49 @@
-# SerializationBenchmarks
+# SerializationBenchmark
 
-Compare serialization to a byte buffer for different packages and options;
+Compare serialization to a byte buffer for different packages and options.
 
-|                            Method |       Mean |    Error |    StdDev |     Median |       Gen 0 |      Gen 1 | Gen 2 |  Allocated |
-|---------------------------------- |-----------:|---------:|----------:|-----------:|------------:|-----------:|------:|-----------:|
-|        MessagePack_SerializePlain |   428.3 ms |  8.53 ms |  23.64 ms |   425.1 ms |   2000.0000 |          - |     - |    9.61 MB |
-|   MessagePack_SerializeCompressed |   667.2 ms | 12.46 ms |  28.87 ms |   661.9 ms |   2000.0000 |          - |     - |    9.61 MB |
-|      MessagePack_SerializePickled |   966.4 ms | 19.30 ms |  36.73 ms |   964.5 ms |  18000.0000 |          - |     - |   71.95 MB |
-|           Protobuf_SerializePlain | 1,550.0 ms | 42.94 ms | 121.11 ms | 1,501.3 ms |  11000.0000 |          - |     - |   44.25 MB |
-|         Protobuf_SerializePickled | 1,746.3 ms | 92.04 ms | 268.47 ms | 1,639.5 ms |  27000.0000 |          - |     - |  109.94 MB |
-|     SystemTextJson_SerializePlain |   706.4 ms | 14.00 ms |  28.59 ms |   708.0 ms |  56000.0000 |          - |     - |  228.04 MB |
-|   SystemTextJson_SerializePickled | 1,189.5 ms | 20.85 ms |  34.26 ms | 1,179.4 ms |  23000.0000 |          - |     - |   93.61 MB |
-|         Newtonsoft_SerializePlain | 1,536.2 ms | 29.59 ms |  59.09 ms | 1,516.7 ms | 288000.0000 | 38000.0000 |     - | 1156.16 MB |
-|       Newtonsoft_SerializePickled | 2,180.6 ms | 43.57 ms |  86.00 ms | 2,157.2 ms | 307000.0000 | 25000.0000 |     - | 1230.24 MB |
-|      MessagePack_DeserializePlain |   506.9 ms | 10.00 ms |  21.96 ms |   502.3 ms | 113000.0000 |          - |     - |  454.41 MB |
-| MessagePack_DeserializeCompressed |   525.5 ms | 10.35 ms |  16.12 ms |   524.9 ms | 113000.0000 |          - |     - |  454.41 MB |
-|    MessagePack_DeserializePickled |   560.9 ms | 11.05 ms |  16.55 ms |   558.2 ms | 140000.0000 | 20000.0000 |     - |  560.84 MB |
-|         Protobuf_DeserializePlain |   667.0 ms | 13.13 ms |  14.05 ms |   662.6 ms | 121000.0000 |  2000.0000 |     - |  485.08 MB |
-|       Protobuf_DeserializePickled |   731.2 ms | 14.43 ms |  27.45 ms |   731.8 ms | 149000.0000 | 24000.0000 |     - |  597.31 MB |
-|   SystemTextJson_DeserializePlain | 1,526.6 ms | 13.82 ms |  11.54 ms | 1,527.9 ms | 125000.0000 |          - |     - |  501.25 MB |
-| SystemTextJson_DeserializePickled | 1,643.8 ms | 20.20 ms |  17.91 ms | 1,643.1 ms | 177000.0000 | 25000.0000 |     - |  709.53 MB |
-|       Newtonsoft_DeserializePlain | 2,658.0 ms | 35.56 ms |  33.27 ms | 2,662.1 ms | 256000.0000 |          - |     - | 1025.77 MB |
-|     Newtonsoft_DeserializePickled | 2,778.4 ms | 55.52 ms |  57.01 ms | 2,771.3 ms | 307000.0000 | 61000.0000 |     - | 1234.13 MB |
+|                            Method |       Mean |    Error |    StdDev |       Gen 0 |      Gen 1 | Gen 2 |  Allocated |
+|---------------------------------- |-----------:|---------:|----------:|------------:|-----------:|------:|-----------:|
+|        MessagePack_SerializePlain |   292.1 ms |  5.40 ms |   6.21 ms |   2000.0000 |          - |     - |    9.61 MB |
+|   MessagePack_SerializeCompressed |   492.8 ms |  7.35 ms |  10.06 ms |   2000.0000 |          - |     - |    9.61 MB |
+|      MessagePack_SerializePickled |   751.7 ms | 14.62 ms |  29.87 ms |  19000.0000 |          - |     - |   76.52 MB |
+|        ProtobufNet_SerializePlain | 1,056.8 ms | 19.53 ms |  19.19 ms |  11000.0000 |          - |     - |   44.25 MB |
+|      ProtobufNet_SerializePickled | 1,641.1 ms | 30.66 ms |  28.67 ms |  28000.0000 |          - |     - |  114.67 MB |
+|           Protobuf_SerializePlain |   484.8 ms |  6.40 ms |   5.67 ms |   3000.0000 |          - |     - |   13.73 MB |
+|         Protobuf_SerializePickled |   966.9 ms | 17.26 ms |  26.87 ms |  20000.0000 |          - |     - |    82.4 MB |
+|     SystemTextJson_SerializePlain |   803.1 ms | 15.89 ms |  28.24 ms |  56000.0000 |          - |     - |  226.82 MB |
+|   SystemTextJson_SerializePickled | 1,417.1 ms | 18.51 ms |  15.45 ms |  24000.0000 |          - |     - |   99.49 MB |
+|         Newtonsoft_SerializePlain | 1,718.5 ms | 33.79 ms |  54.56 ms | 285000.0000 |          - |     - | 1153.03 MB |
+|       Newtonsoft_SerializePickled | 2,288.0 ms | 25.30 ms |  21.13 ms | 307000.0000 | 43000.0000 |     - | 1232.83 MB |
+|      MessagePack_DeserializePlain |   586.0 ms | 11.58 ms |  11.89 ms | 113000.0000 |  2000.0000 |     - |  452.13 MB |
+| MessagePack_DeserializeCompressed |   620.9 ms | 12.37 ms |  20.32 ms | 113000.0000 |  2000.0000 |     - |  452.12 MB |
+|    MessagePack_DeserializePickled |   705.9 ms | 19.34 ms |  52.60 ms | 139000.0000 | 20000.0000 |     - |   557.4 MB |
+|      ProtobufNet_DeserializePlain |   771.3 ms | 12.71 ms |  18.23 ms | 121000.0000 |          - |     - |  482.79 MB |
+|    ProtobufNet_DeserializePickled |   845.0 ms | 14.73 ms |  13.06 ms | 148000.0000 |  4000.0000 |     - |   593.8 MB |
+|         Protobuf_DeserializePlain |   545.1 ms |  7.08 ms |   5.91 ms | 129000.0000 |  1000.0000 |     - |  518.34 MB |
+|       Protobuf_DeserializePickled |   743.8 ms | 28.11 ms |  82.01 ms | 154000.0000 | 22000.0000 |     - |  617.75 MB |
+|   SystemTextJson_DeserializePlain | 1,882.1 ms | 27.80 ms |  21.70 ms | 125000.0000 | 16000.0000 |     - |  498.96 MB |
+| SystemTextJson_DeserializePickled | 2,075.7 ms | 43.62 ms | 122.31 ms | 176000.0000 |  1000.0000 |     - |  706.18 MB |
+|       Newtonsoft_DeserializePlain | 3,098.0 ms | 60.45 ms |  97.61 ms | 255000.0000 | 54000.0000 |     - | 1021.27 MB |
+|     Newtonsoft_DeserializePickled | 3,301.8 ms | 65.39 ms | 114.53 ms | 307000.0000 | 38000.0000 |     - | 1228.71 MB |
 
 Serialized data sizes for the different options:
 
-_msgpack_plain         : 11135 bytes
-_msgpack_comp          : 7033 bytes
-_msgpack_pickled       : 6498 bytes
-_protobuf_plain        : 11742 bytes
-_protobuf_pickled      : 6863 bytes
-_systemtextjson_plain  : 21812 bytes
-_systemtextjson_pickled: 7760 bytes
-_newtonsoft_plain      : 21807 bytes
-_newtonsoft_pickled    : 7754 bytes
+_msgpack_plain         : 11012 bytes
+_msgpack_comp          : 7382 bytes
+_msgpack_pickled       : 6996 bytes
+_protobufnet_plain     : 11610 bytes
+_protobufnet_pickled   : 7346 bytes
+_protobuf_plain        : 10393 bytes
+_protobuf_pickled      : 7164 bytes
+_systemtextjson_plain  : 21686 bytes
+_systemtextjson_pickled: 8360 bytes
+_newtonsoft_plain      : 21671 bytes
+_newtonsoft_pickled    : 8349 bytes
+
+The *Plain varients use the respective technology directly in their best light, using reusable buffers
+when possible.
+
+The *Compressed variants use built-in compression functionality when available.
+
+The *Pickled vriants use an external LZ4 compression library.

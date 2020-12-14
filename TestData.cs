@@ -1,11 +1,54 @@
-﻿using System.Collections.Generic;
-using MessagePack;
-using ProtoBuf;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SerializationBenchmark
 {
     internal static class TestData
     {
+        public static readonly UserLicensesResponsePB TestValuePB;
+
+        static TestData()
+        {
+            var r = new Random();
+            foreach (var l in TestValue.Licenses)
+            {
+                foreach (var sp in l.ServicePlans)
+                {
+                    sp.Count = r.Next();
+                }
+            }
+
+            var ulr = new UserLicensesResponsePB();
+
+            // convert the test value from below into the protobuf types
+            foreach (var ul in TestValue.Licenses)
+            {
+                var ulpb = new UserLicensePB();
+                ulpb.ObjectId = ul.ObjectId;
+                ulpb.SkuId = ul.SkuId;
+                ulpb.SkuPartNumber = ul.SkuPartNumber;
+                ulr.Licenses.Add(ulpb);
+
+                foreach (var fc in ul.FruitColors)
+                {
+                    ulpb.FruitColors.Add(fc.Key, (ColorPB)fc.Value);
+                }
+
+                foreach (var sp in ul.ServicePlans)
+                {
+                    var sppb = new ServicePlanPB();
+                    sppb.AppliesTo = sp.AppliesTo;
+                    sppb.Count = sp.Count;
+                    sppb.ServicePlanId = sp.ServicePlanId;
+                    sppb.ServicePlanName = sp.ServicePlanName;
+
+                    ulpb.SercucePlans.Add(sppb);
+                }
+            }
+
+            TestValuePB = ulr;
+        }
+
         // This is the data we use to serialize/deserialize in the benchmark
         public static readonly UserLicensesResponse TestValue = new UserLicensesResponse
         {

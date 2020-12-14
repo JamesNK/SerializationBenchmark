@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package SerializationBenchmark;
+
+message ServicePlanPB {
+    string ServicePlanId = 1;
+    string ServicePlanName = 2;
+    string ProvisioningStatus = 3;
+    string AppliesTo = 4;
+    int32 Count = 5;
+}
+
+enum ColorPB
+{
+    Red = 0;
+    Green = 1;
+    Blue = 2;
+    Yellow = 3;
+    Orange = 4;
+}
+
+message UserLicensePB {
+    string ObjectId = 1;
+    string SkuId = 2;
+    string SkuPartNumber = 3;
+    repeated ServicePlanPB SercucePlans = 4;
+    map<string, ColorPB> FruitColors = 5;
+}
+
+message UserLicensesResponsePB {
+    repeated UserLicensePB Licenses = 1; 
+}

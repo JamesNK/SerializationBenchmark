@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Buffers;
-using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Google.Protobuf;
 
 namespace SerializationBenchmark
 {
@@ -14,7 +14,9 @@ namespace SerializationBenchmark
         private static readonly ArrayBufferWriter<byte> _msgpack_plain;
         private static readonly ArrayBufferWriter<byte> _msgpack_comp;
         private static readonly byte[] _msgpack_pickled;
-        private static readonly ArrayBufferWriter<byte> _protobuf_plain;
+        private static readonly ArrayBufferWriter<byte> _protobufnet_plain;
+        private static readonly byte[] _protobufnet_pickled;
+        private static readonly byte[] _protobuf_plain;
         private static readonly byte[] _protobuf_pickled;
         private static readonly byte[] _systemtextjson_plain;
         private static readonly byte[] _systemtextjson_pickled;
@@ -23,20 +25,13 @@ namespace SerializationBenchmark
 
         static Benchmarks()
         {
-            var r = new Random();
-            foreach (var l in TestData.TestValue.Licenses)
-            {
-                foreach (var sp in l.ServicePlans)
-                {
-                    sp.Count = r.Next();
-                }
-            }
-
             _msgpack_plain = Serializers.MessagePack_SerializePlain(TestData.TestValue);
             _msgpack_comp = Serializers.MessagePack_SerializeCompressed(TestData.TestValue);
             _msgpack_pickled = Serializers.MessagePack_SerializePickled(TestData.TestValue);
-            _protobuf_plain = Serializers.Protobuf_SerializePlain(TestData.TestValue);
-            _protobuf_pickled = Serializers.Protobuf_SerializePickled(TestData.TestValue);
+            _protobufnet_plain = Serializers.ProtobufNet_SerializePlain(TestData.TestValue);
+            _protobufnet_pickled = Serializers.ProtobufNet_SerializePickled(TestData.TestValue);
+            _protobuf_plain = Serializers.Protobuf_SerializePlain(TestData.TestValuePB).WrittenSpan.ToArray();
+            _protobuf_pickled = Serializers.Protobuf_SerializePickled(TestData.TestValuePB);
             _systemtextjson_plain = Serializers.SystemTextJson_SerializePlain(TestData.TestValue);
             _systemtextjson_pickled = Serializers.SystemTextJson_SerializePickled(TestData.TestValue);
             _newtonsoft_plain = Serializers.Newtonsoft_SerializePlain(TestData.TestValue);
@@ -45,7 +40,9 @@ namespace SerializationBenchmark
             Console.WriteLine($"_msgpack_plain         : {_msgpack_plain.WrittenCount} bytes");
             Console.WriteLine($"_msgpack_comp          : {_msgpack_comp.WrittenCount} bytes");
             Console.WriteLine($"_msgpack_pickled       : {_msgpack_pickled.Length} bytes");
-            Console.WriteLine($"_protobuf_plain        : {_protobuf_plain.WrittenCount} bytes");
+            Console.WriteLine($"_protobufnet_plain     : {_protobufnet_plain.WrittenCount} bytes");
+            Console.WriteLine($"_protobufnet_pickled   : {_protobufnet_pickled.Length} bytes");
+            Console.WriteLine($"_protobuf_plain        : {_protobuf_plain.Length} bytes");
             Console.WriteLine($"_protobuf_pickled      : {_protobuf_pickled.Length} bytes");
             Console.WriteLine($"_systemtextjson_plain  : {_systemtextjson_plain.Length} bytes");
             Console.WriteLine($"_systemtextjson_pickled: {_systemtextjson_pickled.Length} bytes");
@@ -83,11 +80,30 @@ namespace SerializationBenchmark
         }
 
         [Benchmark]
+        public void ProtobufNet_SerializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                var br = Serializers.ProtobufNet_SerializePlain(TestData.TestValue);
+                Serializers.Return(br);
+            }
+        }
+
+        [Benchmark]
+        public void ProtobufNet_SerializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_SerializePickled(TestData.TestValue);
+            }
+        }
+
+        [Benchmark]
         public void Protobuf_SerializePlain()
         {
             for (int i = 0; i < Iterations; i++)
             {
-                var br = Serializers.Protobuf_SerializePlain(TestData.TestValue);
+                var br = Serializers.Protobuf_SerializePlain(TestData.TestValuePB);
                 Serializers.Return(br);
             }
         }
@@ -97,7 +113,7 @@ namespace SerializationBenchmark
         {
             for (int i = 0; i < Iterations; i++)
             {
-                _ = Serializers.Protobuf_SerializePickled(TestData.TestValue);
+                _ = Serializers.Protobuf_SerializePickled(TestData.TestValuePB);
             }
         }
 
@@ -165,11 +181,30 @@ namespace SerializationBenchmark
         }
 
         [Benchmark]
+        public void ProtobufNet_DeserializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_DeserializePlain<UserLicensesResponse>(_protobufnet_plain.WrittenSpan);
+            }
+        }
+
+        [Benchmark]
+        public void ProtobufNet_DeserializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_DeserializePicked<UserLicensesResponse>(_protobufnet_pickled);
+            }
+        }
+
+        [Benchmark]
         public void Protobuf_DeserializePlain()
         {
             for (int i = 0; i < Iterations; i++)
             {
-                _ = Serializers.Protobuf_DeserializePlain<UserLicensesResponse>(_protobuf_plain.WrittenSpan);
+                var target = new UserLicensesResponsePB();
+                Serializers.Protobuf_DeserializePlain(_protobuf_plain, target);
             }
         }
 
@@ -178,7 +213,8 @@ namespace SerializationBenchmark
         {
             for (int i = 0; i < Iterations; i++)
             {
-                _ = Serializers.Protobuf_DeserializePicked<UserLicensesResponse>(_protobuf_pickled);
+                var target = new UserLicensesResponsePB();
+                Serializers.Protobuf_DeserializePickled(_protobuf_pickled, target);
             }
         }
 
