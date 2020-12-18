@@ -7,7 +7,7 @@ using Google.Protobuf;
 namespace SerializationBenchmark
 {
     [MemoryDiagnoser]
-    public class Benchmarks
+    public class Bench
     {
         const int Iterations = 10000;
 
@@ -23,7 +23,7 @@ namespace SerializationBenchmark
         private static readonly byte[] _newtonsoft_plain;
         private static readonly byte[] _newtonsoft_pickled;
 
-        static Benchmarks()
+        static Bench()
         {
             _msgpack_plain = Serializers.MessagePack_SerializePlain(TestData.TestValue);
             _msgpack_comp = Serializers.MessagePack_SerializeCompressed(TestData.TestValue);
@@ -253,16 +253,10 @@ namespace SerializationBenchmark
                 _ = Serializers.Newtonsoft_DeserializedPickled<UserLicensesResponse>(_newtonsoft_pickled);
             }
         }
-    }
 
-    class Program
-    {
         static void Main(string[] args)
         {
-//            var b = new Benchmarks();
-//            b.Protobuf_DeserializePickled();
-
-            _ = BenchmarkRunner.Run<Benchmarks>();
+            _ = BenchmarkRunner.Run<Bench>();
         }
     }
 }
