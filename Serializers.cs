@@ -1,12 +1,11 @@
-﻿using Google.Protobuf;
-using K4os.Compression.LZ4;
-using MessagePack;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Buffers;
 using System.Text;
 using System.Text.Json;
 using Google.Protobuf;
+using K4os.Compression.LZ4;
+using MessagePack;
+using Newtonsoft.Json;
 
 namespace SerializationBenchmark
 {
