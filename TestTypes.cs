@@ -10,19 +10,19 @@ namespace SerializationBenchmark
     {
         [ProtoMember(1)]
         [Key(0)]
-        public string ServicePlanId { get; set; }
+        public string? ServicePlanId { get; set; }
 
         [ProtoMember(2)]
         [Key(1)]
-        public string ServicePlanName { get; set; }
+        public string? ServicePlanName { get; set; }
 
         [ProtoMember(3)]
         [Key(2)]
-        public string ProvisioningStatus { get; set; }
+        public string? ProvisioningStatus { get; set; }
 
         [ProtoMember(4)]
         [Key(3)]
-        public string AppliesTo { get; set; }
+        public string? AppliesTo { get; set; }
 
         [ProtoMember(5)]
         [Key(6)]
@@ -44,7 +44,7 @@ namespace SerializationBenchmark
     {
         [ProtoMember(1)]
         [Key(0)]
-        public IList<UserLicense> Licenses { get; set; }
+        public IList<UserLicense>? Licenses { get; set; }
     }
 
     [ProtoContract]
@@ -53,15 +53,15 @@ namespace SerializationBenchmark
     {
         [ProtoMember(1)]
         [Key(0)]
-        public string ObjectId { get; set; }
+        public string? ObjectId { get; set; }
 
         [ProtoMember(2)]
         [Key(1)]
-        public string SkuId { get; set; }
+        public string? SkuId { get; set; }
 
         [ProtoMember(3)]
         [Key(2)]
-        public string SkuPartNumber { get; set; }
+        public string? SkuPartNumber { get; set; }
 
         [ProtoMember(4)]
         [Key(3)]
@@ -69,6 +69,6 @@ namespace SerializationBenchmark
 
         [ProtoMember(5)]
         [Key(4)]
-        public IDictionary<string, Color> FruitColors { get; set; }
+        public IDictionary<string, Color>? FruitColors { get; set; }
     }
 }

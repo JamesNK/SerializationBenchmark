@@ -120,7 +120,7 @@ namespace SerializationBenchmark
 
         public static T SystemTextJson_DeserializePlain<T>(ReadOnlySpan<byte> data)
         {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(data);
+            return System.Text.Json.JsonSerializer.Deserialize<T>(data)!;
         }
 
         public static byte[] SystemTextJson_SerializePickled<T>(T data)
@@ -135,7 +135,7 @@ namespace SerializationBenchmark
 
         public static T SystemTextJson_DeserializedPickled<T>(ReadOnlySpan<byte> data)
         {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(LZ4Pickler.Unpickle(data));
+            return System.Text.Json.JsonSerializer.Deserialize<T>(LZ4Pickler.Unpickle(data))!;
         }
 
         public static byte[] Newtonsoft_SerializePlain<T>(T data)
