@@ -158,7 +158,7 @@ namespace SerializationBenchmark
         {
             for (int i = 0; i < Iterations; i++)
             {
-                _ = Serializers.MessagePack_DeserialzePlain<UserLicensesResponse>(_msgpack_plain.WrittenMemory);
+                _ = Serializers.MessagePack_DeserializePlain<UserLicensesResponse>(_msgpack_plain.WrittenMemory);
             }
         }
 
@@ -194,7 +194,7 @@ namespace SerializationBenchmark
         {
             for (int i = 0; i < Iterations; i++)
             {
-                _ = Serializers.ProtobufNet_DeserializePicked<UserLicensesResponse>(_protobufnet_pickled);
+                _ = Serializers.ProtobufNet_DeserializePickled<UserLicensesResponse>(_protobufnet_pickled);
             }
         }
 

@@ -27,7 +27,7 @@ namespace SerializationBenchmark
             return br;
         }
 
-        public static T MessagePack_DeserialzePlain<T>(ReadOnlyMemory<byte> data)
+        public static T MessagePack_DeserializePlain<T>(ReadOnlyMemory<byte> data)
         {
             return MessagePackSerializer.Deserialize<T>(data, _options);
         }
@@ -81,7 +81,7 @@ namespace SerializationBenchmark
             return result;
         }
 
-        public static T ProtobufNet_DeserializePicked<T>(ReadOnlySpan<byte> data)
+        public static T ProtobufNet_DeserializePickled<T>(ReadOnlySpan<byte> data)
         {
             return ProtoBuf.Serializer.Deserialize<T>(new ReadOnlyMemory<byte>(LZ4Pickler.Unpickle(data)));
         }
