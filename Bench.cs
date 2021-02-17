@@ -79,24 +79,24 @@ namespace SerializationBenchmark
             }
         }
 
-        //[Benchmark]
-        //public void ProtobufNet_SerializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        var br = Serializers.ProtobufNet_SerializePlain(TestData.TestValue);
-        //        Serializers.Return(br);
-        //    }
-        //}
+        [Benchmark]
+        public void ProtobufNet_SerializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                var br = Serializers.ProtobufNet_SerializePlain(TestData.TestValue);
+                Serializers.Return(br);
+            }
+        }
 
-        //[Benchmark]
-        //public void ProtobufNet_SerializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.ProtobufNet_SerializePickled(TestData.TestValue);
-        //    }
-        //}
+        [Benchmark]
+        public void ProtobufNet_SerializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_SerializePickled(TestData.TestValue);
+            }
+        }
 
         [Benchmark]
         public void Protobuf_SerializePlain()
@@ -117,41 +117,41 @@ namespace SerializationBenchmark
             }
         }
 
-        //[Benchmark]
-        //public void SystemTextJson_SerializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.SystemTextJson_SerializePlain(TestData.TestValue);
-        //    }
-        //}
+        [Benchmark]
+        public void SystemTextJson_SerializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.SystemTextJson_SerializePlain(TestData.TestValue);
+            }
+        }
 
-        //[Benchmark]
-        //public void SystemTextJson_SerializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.SystemTextJson_SerializePickled(TestData.TestValue);
-        //    }
-        //}
+        [Benchmark]
+        public void SystemTextJson_SerializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.SystemTextJson_SerializePickled(TestData.TestValue);
+            }
+        }
 
-        //[Benchmark]
-        //public void Newtonsoft_SerializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.Newtonsoft_SerializePlain(TestData.TestValue);
-        //    }
-        //}
+        [Benchmark]
+        public void Newtonsoft_SerializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.Newtonsoft_SerializePlain(TestData.TestValue);
+            }
+        }
 
-        //[Benchmark]
-        //public void Newtonsoft_SerializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.Newtonsoft_SerializePickled(TestData.TestValue);
-        //    }
-        //}
+        [Benchmark]
+        public void Newtonsoft_SerializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.Newtonsoft_SerializePickled(TestData.TestValue);
+            }
+        }
 
         [Benchmark]
         public void MessagePack_DeserializePlain()
@@ -180,23 +180,23 @@ namespace SerializationBenchmark
             }
         }
 
-        //[Benchmark]
-        //public void ProtobufNet_DeserializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.ProtobufNet_DeserializePlain<UserLicensesResponse>(_protobufnet_plain.WrittenSpan);
-        //    }
-        //}
+        [Benchmark]
+        public void ProtobufNet_DeserializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_DeserializePlain<UserLicensesResponse>(_protobufnet_plain.WrittenSpan);
+            }
+        }
 
-        //[Benchmark]
-        //public void ProtobufNet_DeserializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.ProtobufNet_DeserializePickled<UserLicensesResponse>(_protobufnet_pickled);
-        //    }
-        //}
+        [Benchmark]
+        public void ProtobufNet_DeserializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.ProtobufNet_DeserializePickled<UserLicensesResponse>(_protobufnet_pickled);
+            }
+        }
 
         [Benchmark]
         public void Protobuf_DeserializePlain()
@@ -218,41 +218,41 @@ namespace SerializationBenchmark
             }
         }
 
-        //[Benchmark]
-        //public void SystemTextJson_DeserializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.SystemTextJson_DeserializePlain<UserLicensesResponse>(_systemtextjson_plain);
-        //    }
-        //}
+        [Benchmark]
+        public void SystemTextJson_DeserializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.SystemTextJson_DeserializePlain<UserLicensesResponse>(_systemtextjson_plain);
+            }
+        }
 
-        //[Benchmark]
-        //public void SystemTextJson_DeserializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.SystemTextJson_DeserializedPickled<UserLicensesResponse>(_systemtextjson_pickled);
-        //    }
-        //}
+        [Benchmark]
+        public void SystemTextJson_DeserializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.SystemTextJson_DeserializedPickled<UserLicensesResponse>(_systemtextjson_pickled);
+            }
+        }
 
-        //[Benchmark]
-        //public void Newtonsoft_DeserializePlain()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.Newtonsoft_DeserializePlain<UserLicensesResponse>(_newtonsoft_plain);
-        //    }
-        //}
+        [Benchmark]
+        public void Newtonsoft_DeserializePlain()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.Newtonsoft_DeserializePlain<UserLicensesResponse>(_newtonsoft_plain);
+            }
+        }
 
-        //[Benchmark]
-        //public void Newtonsoft_DeserializePickled()
-        //{
-        //    for (int i = 0; i < Iterations; i++)
-        //    {
-        //        _ = Serializers.Newtonsoft_DeserializedPickled<UserLicensesResponse>(_newtonsoft_pickled);
-        //    }
-        //}
+        [Benchmark]
+        public void Newtonsoft_DeserializePickled()
+        {
+            for (int i = 0; i < Iterations; i++)
+            {
+                _ = Serializers.Newtonsoft_DeserializedPickled<UserLicensesResponse>(_newtonsoft_pickled);
+            }
+        }
 
         static void Main(string[] args)
         {
